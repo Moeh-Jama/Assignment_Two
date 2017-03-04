@@ -2,7 +2,7 @@
  * main.c
  *
  *  Created on: Feb 27, 2017
- *      Author: ja123
+ *      Author: Eoin Leonard & Mohamed Jama.
  */
 
 #include <stdio.h>
