@@ -43,8 +43,8 @@ int main(void)
 			printf("PLEASE ENTER DETAILS FOR PLAYER %d", i+1);
 			printf("\nEnter player[i] name: ");
 			scanf("%s%s", cases[i].name_one, cases[i].name_two);
-			printf("\nEnter player type");
-			printf("choose 1.Ogre\n2.Human\n3.Wizard\n4.Elf");
+			printf("\nEnter player type\n");
+			printf("choose \n1.Ogre\n2.Human\n3.Wizard\n4.Elf\n");
 			int choice;
 			scanf("%d", &choice);
 
@@ -81,6 +81,7 @@ int main(void)
 			cases[i].magic_skills =m_s;
 			cases[i].strength = st;
 			cases[i].smartness= sm;
+			cases[i].health = 100;
 		}
 		print_players();
 	return 0;
@@ -155,7 +156,8 @@ void print_players(){
 		printf("Player Name: %s %s\n", cases[i].name_one, cases[i].name_two);
 		printf("Player Type: ");
 		player_type(count);
-		printf("\nPlayer Dexterity: %d\n", cases[i].dexterity);
+		printf("\nPlayer Health: %d\n", cases[i].health);
+		printf("Player Dexterity: %d\n", cases[i].dexterity);
 		printf("Player Luck: %d\n", cases[i].luck);
 		printf("Player Magic Skills: %d\n", cases[i].magic_skills);
 		printf("Player Strength: %d\n", cases[i].strength);
