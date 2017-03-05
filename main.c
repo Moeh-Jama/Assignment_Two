@@ -2,22 +2,13 @@
  * main.c
  *
  *  Created on: Feb 27, 2017
- *      Author: Eoin Leonard & Mohamed Jama.
+ *      Author: ja123
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-/*struct general_player_build {
-
-	char name_one[20];
-//	char name_two[20];
-	int health = 0;
-	char type = " ";
-	int dexterity=0, luck=0, magic_skills=0, strength=0, smartness=0;
-};*/
-
-
+//Here the struct is built where all the aspects of the character details and characteristics of what they would have included is laid out.
 struct general_player_build{
 	char name_one[20];
 	char name_two[20];
@@ -25,21 +16,27 @@ struct general_player_build{
 	int type;
 	int dexterity, luck, magic_skills, strength, smartness;
 };
+void player_type(int type_integer);
+void player_type_function(int *t, int *d, int *l, int *m_s, int *st, int *sm, int *Index);	//function prototype!
 
-void player_type_function(int *t, int *d, int *l, int *m_s, int *st, int *sm, int Index);	//function prototype!
 
-//static global
+
+//the cases is used to store the specific number of players
+int player_number=6;
 struct general_player_build cases[6];
 
 int main(void)
 {
 	setbuf(stdout,NULL);
-	int player_number;	//change to unsigned int i.e. >=0
 		printf("Enter the number of players in this game!\nNumber of Players: ");
 		scanf("%d", &player_number);//number of players in the game.
+		while(player_number<=0 || player_number>=7){
+			printf("\nThe number of players is either too high or low, remember between 1-6 players!\n");
+			printf("Enter the number of players in this game!\nNumber of Players: ");
+			scanf("%d", &player_number);
+		}
 
-
-		for(int i=0; i<player_number-1; i++)
+		for(int i=0; i<player_number; i++)
 		{
 
 			int t=0, d=0, sm=0, st=0, l=0, m_s=0;
@@ -54,104 +51,95 @@ int main(void)
 			switch(choice)
 			{
 			case 1:{
-				printf("you have chosen Ogre!");
 				cases[i].type = 0;
-				printf("\nT\n");
-				//printf("\n %s", cases[i].type);
 				break;
 			}
 			case 2:{
-				printf("you have chosen Human!");
 				cases[i].type = 1;
-				printf("\nT\n");
-				//printf("\n %s", cases[i].type);
 				break;
 			}
 			case 3:{
-				printf("you have chosen Wizard!");
 				cases[i].type = 2;
-				printf("\nT\n");
-				//printf("\n %s", cases[i].type);
 				break;
 			}
 			case 4:{
-				printf("you have chosen Elf!");
 				cases[i].type = 3;
-				printf("\nT\n");
-				//printf("\n %s\n", cases[i].type);
 				break;
 
 			}
 			default:{
 				printf("ERROR!");
-				//exit(0);
+				exit(0);
 			}
 			}
 
 			//Create a method so I can get the data out of the player_type_function.
 			//Use pointers as in
-			player_type_function(&t, &d, &l, &m_s, &st, &sm, i); //do operation in order of variables shown type-smartness!
-			printf("\nTESTING\n");
-			cases[i].type = t;
+			player_type_function(&t, &d, &l, &m_s, &st, &sm, &i); //do operation in order of variables shown type-smartness!
 			cases[i].dexterity =d;
 			cases[i].luck = l;
 			cases[i].magic_skills =m_s;
 			cases[i].strength = st;
 			cases[i].smartness= sm;
-
-					printf("\n\nPlayer Name: %s\nPlayer Type %d\nPlayer dexterity\ %d\nPlayer Luck %d\n Player MagicSkills %d\nPlayer Strength %d\nPlayer Smartness %d\n", cases[i].name_one, cases[i].type, cases[i].dexterity, cases[i].luck, cases[i].magic_skills, cases[i].strength, cases[i].smartness);
-					printf("\n*********************************************************\n");
-
 		}
 		print_players();
 	return 0;
 }
-void player_type_function(int *t, int *d, int *l, int *m_s, int *st, int *sm, int index){
+void player_type_function(int *t, int *d, int *l, int *m_s, int *st, int *sm, int *index){
 	srand(time(NULL));
-	int rand_t, rand_d, rand_l, rand_m_s, rand_st, rand_sm;
-	if(cases[index].type == 0)
+	if(cases[*index].type == 0)
 	{
-		//OGRE
+		//Limitations and requirements of the Ogre Type skills are adhered in this block.
+		printf("\nOGRE\n");
+		do{
+			*sm = rand()%20;
+			*l = rand()%100;
+		}while((*sm+*l)>51);
 		*m_s=0;
-		*sm = rand()%20;
 		do{*st = rand()%100;
 		}while(*st<80);
 		do{*d = rand()%100;
 		}while(*d<80);
-		*l =  rand()%10;
 	}
-	else if(cases[index].type == 1)
-		{
-		//HUMAN
-			*m_s=25;
-			*sm = rand()%70;
-			do{*st = rand()%70;
-			}while(*st>80);
-
-			*d=rand()%70;
-		}
-	else if(cases[index].type == 2){
-			//
-				*m_s=25;
-				do{
-					*sm = rand()%100;
-				}while(*sm<90);
-				*st = rand()%20;
-				*d=0;
-				do{
-					*l = rand()%100;
-				}while(*l<50);
-			}
-	else if(cases[index].type == 3){
-				//printf("choose 1.Ogre\n2.Human\n3.Wizard\n4.Elf");
-					do{*m_s=rand()%80;}while(*m_s<50);
-					do{
-						*sm = rand()%100;
-					}while(*sm<70);
-					*st = rand()%50;
-					*d=0;
-					do{*l = rand()%100;}while(*l<50);
-				}
+	else if(cases[*index].type == 1)
+	{
+		//Limitations and requirements of the Human Type skills are adhered in this block.
+		do{
+			*m_s=1+rand()%100;
+			*sm = 1+rand()%70;
+			*st = 1+rand()%100;
+			*l= 1+rand()%100;
+			*d= 1+rand()%100;
+		}while((*m_s+*sm+*st+*l+*d)>300);
+	}
+	else if(cases[*index].type == 2)
+	{
+		//Limitations and requirements of the Wizard Type skills are adhered in this block.
+		*m_s=25;
+		do{
+			*sm = rand()%100;
+		}while(*sm<90);
+		*st = rand()%20;
+		*d=rand()%100;
+		do{
+			*l = rand()%100;
+		}while(*l<50);
+	}
+	else if(cases[*index].type == 3)
+	{
+		//Limitations and requirements of the Elf Type skills are adhered in this block.
+		do{
+			*m_s=rand()%80;
+		}while(*m_s<50);
+		do{
+			*sm = rand()%100;
+		}while(*sm<70);
+		*st = rand()%50;
+		*d=rand()%100;
+		do{
+			*l = rand()%100;
+		}while(*l<50);
+	}
 
 	else{
 		printf("ERROR CANNOT ASSIGN VALUE TO CHARACTER");
@@ -161,10 +149,43 @@ void player_type_function(int *t, int *d, int *l, int *m_s, int *st, int *sm, in
 }
 void print_players(){
 
-	for(int i=0; i<6; i++)
+	for(int i=0; i<player_number; i++)
 	{
-		printf("Player Name: %s\nPlayer Type %d\nPlayer dexterity\ %d\nPlayer Luck %d\n Player MagicSkills %d\nPlayer Strength %d\nPlayer Smartness %d\n", cases[i].name_one, cases[i].type, cases[i].dexterity, cases[i].luck, cases[i].magic_skills, cases[i].strength, cases[i].smartness);
+		int count = cases[i].type;
+		printf("Player Name: %s %s\n", cases[i].name_one, cases[i].name_two);
+		printf("Player Type: ");
+		player_type(count);
+		printf("\nPlayer Dexterity: %d\n", cases[i].dexterity);
+		printf("Player Luck: %d\n", cases[i].luck);
+		printf("Player Magic Skills: %d\n", cases[i].magic_skills);
+		printf("Player Strength: %d\n", cases[i].strength);
+		printf("Player Smartness: %d\n", cases[i].smartness);
 		printf("\n*********************************************************\n");
 	}
+
+}
+void player_type(int type_Integer)
+{
+	char type[6];
+	if(type_Integer == 0)
+	{
+		printf( "Ogre");
+	}
+	else if(type_Integer ==1)
+	{
+		printf("Human");
+	}
+	else if(type_Integer ==2)
+	{
+		printf("Wizard");
+	}
+	else if(type_Integer ==3)
+	{
+		printf("Elf");
+	}
+	else{
+		printf("ERROR");
+	}
+
 
 }
